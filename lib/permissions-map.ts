@@ -212,6 +212,16 @@ export interface UserPermissions {
   gh_entrevistas: boolean
   gh_bienestar: boolean
   gh_participacion: boolean
+  // ---------------------------------------------------------------------------
+  // Servimos · Personal en Misión. Estos 5 viven en `servimos.permisos_usuarios`
+  // (esquema aparte), NO en esta tabla `public.permisos_usuarios` — los fusiona
+  // `getUserPermissions()` en lib/permissions-actions.ts. Ver scripts/servimos/.
+  // ---------------------------------------------------------------------------
+  servimos_solicitudes: boolean
+  servimos_programacion: boolean
+  servimos_horas_extra: boolean
+  servimos_novedades: boolean
+  servimos_cuadro_control: boolean
 }
 
 export const MODULE_PERMISSION_MAP: Record<string, keyof UserPermissions> = {
@@ -389,4 +399,10 @@ export const MODULE_PERMISSION_MAP: Record<string, keyof UserPermissions> = {
   Entrevistas: "gh_entrevistas",
   "Programa de Bienestar": "gh_bienestar",
   "Participación y Evidencias": "gh_participacion",
+  // --- Servimos · Personal en Misión ---
+  "Solicitudes de Personal en Misión": "servimos_solicitudes",
+  "Programación de Personal en Misión": "servimos_programacion",
+  "Horas Extra en Misión": "servimos_horas_extra",
+  "Novedades de Personal en Misión": "servimos_novedades",
+  "Cuadro de Control Servimos": "servimos_cuadro_control",
 }

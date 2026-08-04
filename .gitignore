@@ -22,5 +22,8 @@ node_modules
 /*.doc
 /*.docx
 /*.zip
+# SGC de Servimos (documentación fuente completa, ~1GB) — insumo de
+# referencia para construir Certificaciones/SST, nunca se versiona.
+/sgc-servimos-fuente/
 # Artefacto de build de TypeScript
 tsconfig.tsbuildinfo

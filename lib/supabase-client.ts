@@ -27,3 +27,8 @@ export const supabase: DBClient = (() => {
   }
   return supabaseInstance
 })()
+
+// Esquema "servimos": para tablas/funciones NUEVAS (ver scripts/servimos/).
+// Las tablas existentes siguen en `public` sin cambios; esto es solo para
+// trabajo nuevo que ya no vive en el esquema public.
+export const supabaseServimos = supabase.schema("servimos") as unknown as DBClient

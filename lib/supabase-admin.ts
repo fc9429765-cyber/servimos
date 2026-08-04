@@ -27,3 +27,10 @@ export async function getSupabaseAdmin(): Promise<DBClient> {
   }
   return adminClient
 }
+
+// Esquema "servimos": para tablas/funciones NUEVAS (ver scripts/servimos/).
+// Las tablas existentes siguen en `public` sin cambios.
+export async function getSupabaseAdminServimos(): Promise<DBClient> {
+  const admin = await getSupabaseAdmin()
+  return admin.schema("servimos") as unknown as DBClient
+}

@@ -8,6 +8,7 @@ import { getCurrentEmpresaId } from "@/lib/company-filter"
 // valores no async desde archivos con "use server", asi que el mapa no
 // puede vivir aqui. Importamos desde el modulo compartido.
 import { MODULE_PERMISSION_MAP, type UserPermissions } from "@/lib/permissions-map"
+import { getUserPermissionsServimos } from "@/lib/permissions-servimos-actions"
 
 export async function getUserPermissions(userId?: string): Promise<UserPermissions | null> {
   try {
@@ -22,12 +23,24 @@ export async function getUserPermissions(userId?: string): Promise<UserPermissio
 
     const { data, error } = await supabase.from("permisos_usuarios").select("*").eq("usuario_id", userId).single()
 
-    if (error) {
-      console.error("Error fetching user permissions:", error)
-      return null
+    // Los permisos de módulos Servimos viven en `servimos.permisos_usuarios`
+    // (esquema aparte, ver lib/permissions-servimos-actions.ts). Se fusionan
+    // aquí para que sidebar.tsx/permission-guard.tsx sigan viendo una sola
+    // fuente de permisos sin saber que hay dos tablas detrás.
+    const servimosPermissions = await getUserPermissionsServimos(userId)
+
+    if (error || !data) {
+      // Sin fila en public.permisos_usuarios (ej: staff exclusivo de
+      // Servimos, sin acceso a módulos de LIP) — no es un error si de
+      // todas formas tiene permisos en servimos.permisos_usuarios.
+      if (!servimosPermissions) {
+        console.error("Error fetching user permissions:", error)
+        return null
+      }
+      return { usuario_id: userId, ...servimosPermissions } as UserPermissions
     }
 
-    return data as UserPermissions
+    return { ...data, ...servimosPermissions } as UserPermissions
   } catch (error) {
     console.error("Error in getUserPermissions:", error)
     return null

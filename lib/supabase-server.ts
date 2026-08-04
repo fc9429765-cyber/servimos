@@ -40,3 +40,9 @@ export function createServerClient(): DBClient {
 }
 
 export { createServerClient as createClient }
+
+// Esquema "servimos": para tablas/funciones NUEVAS (ver scripts/servimos/).
+// Las tablas existentes siguen en `public` sin cambios.
+export function createServimosServerClient(): DBClient {
+  return createServerClient().schema("servimos") as unknown as DBClient
+}

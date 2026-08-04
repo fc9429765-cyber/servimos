@@ -143,6 +143,11 @@ import AsistenteIA from "@/components/asistente-ia" // Added import for AI Assis
 import FormularioRegistroGasto from "@/components/gastos/formulario-registro-gasto"
 import DashboardGastos from "@/components/gastos/dashboard-gastos"
 import EstadoResultados from "@/components/estado-resultados/estado-resultados"
+import { SolicitudesPersonal } from "@/components/servimos/solicitudes-personal"
+import { ProgramacionTurnosServimos } from "@/components/servimos/programacion-turnos-servimos"
+import { HorasExtraServimos } from "@/components/servimos/horas-extra-servimos"
+import { NovedadesServimos } from "@/components/servimos/novedades-servimos"
+import { CuadroControlServimos } from "@/components/servimos/cuadro-control-servimos"
 import { GroupKey } from "@/lib/dashboard-data"
 
 interface MainContentProps {
@@ -980,6 +985,26 @@ export function MainContent({
               <div className="h-[calc(100dvh-9rem)] min-h-[520px] w-full overflow-hidden rounded-lg border border-border/60">
                 <AsistenteIA onNavigate={onNavigateModule} onOpenGroup={onOpenGroup} />
               </div>
+            </PermissionGuard>
+          ) : selectedModule === "Solicitudes de Personal en Misión" ? (
+            <PermissionGuard moduleName="Solicitudes de Personal en Misión">
+              <SolicitudesPersonal />
+            </PermissionGuard>
+          ) : selectedModule === "Programación de Personal en Misión" ? (
+            <PermissionGuard moduleName="Programación de Personal en Misión">
+              <ProgramacionTurnosServimos />
+            </PermissionGuard>
+          ) : selectedModule === "Horas Extra en Misión" ? (
+            <PermissionGuard moduleName="Horas Extra en Misión">
+              <HorasExtraServimos />
+            </PermissionGuard>
+          ) : selectedModule === "Novedades de Personal en Misión" ? (
+            <PermissionGuard moduleName="Novedades de Personal en Misión">
+              <NovedadesServimos />
+            </PermissionGuard>
+          ) : selectedModule === "Cuadro de Control Servimos" ? (
+            <PermissionGuard moduleName="Cuadro de Control Servimos">
+              <CuadroControlServimos />
             </PermissionGuard>
           ) : configDef ? (
             <PermissionGuard moduleName={selectedModule || "Configuración"}>

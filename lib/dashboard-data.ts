@@ -34,6 +34,7 @@ export type GroupKey =
   | "despachos"
   | "mrp"
   | "financiera"
+  | "servimos_mision"
 
 export const groups: Group[] = [
   {
@@ -476,6 +477,21 @@ export const groups: Group[] = [
       { name: "Gestión de proveedores", icon: Users },
       { name: "Saldos de empaque", icon: Box },
       { name: "Saldos de materia prima", icon: Package2 },
+    ],
+  },
+  {
+    // Fase 1 Servimos (2026-08-04): programación y novedades de personal en
+    // misión. Vive en el esquema `servimos` (ver scripts/servimos/), aparte
+    // de los datos operativos de LIP en `public`.
+    key: "servimos_mision",
+    title: "Personal en Misión",
+    icon: HeartHandshake,
+    modules: [
+      { name: "Solicitudes de Personal en Misión", icon: Send },
+      { name: "Programación de Personal en Misión", icon: CalendarClock },
+      { name: "Horas Extra en Misión", icon: Clock },
+      { name: "Novedades de Personal en Misión", icon: NotebookPen },
+      { name: "Cuadro de Control Servimos", icon: Gauge },
     ],
   },
 ]
