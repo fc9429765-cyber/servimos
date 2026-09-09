@@ -213,15 +213,19 @@ export interface UserPermissions {
   gh_bienestar: boolean
   gh_participacion: boolean
   // ---------------------------------------------------------------------------
-  // Servimos · Personal en Misión. Estos 5 viven en `servimos.permisos_usuarios`
+  // Servimos · Personal en Misión. Estos viven en `servimos.permisos_usuarios`
   // (esquema aparte), NO en esta tabla `public.permisos_usuarios` — los fusiona
   // `getUserPermissions()` en lib/permissions-actions.ts. Ver scripts/servimos/.
+  // servimos_solicitudes / servimos_horas_extra quedan sin módulo en el menú
+  // desde la Fase 2 (ver lib/dashboard-data.ts) — se conservan en la tabla
+  // por si Solicitudes vuelve en una fase futura, pero no se usan hoy.
   // ---------------------------------------------------------------------------
   servimos_solicitudes: boolean
   servimos_programacion: boolean
   servimos_horas_extra: boolean
   servimos_novedades: boolean
   servimos_cuadro_control: boolean
+  servimos_inicio: boolean
 }
 
 export const MODULE_PERMISSION_MAP: Record<string, keyof UserPermissions> = {
@@ -400,9 +404,7 @@ export const MODULE_PERMISSION_MAP: Record<string, keyof UserPermissions> = {
   "Programa de Bienestar": "gh_bienestar",
   "Participación y Evidencias": "gh_participacion",
   // --- Servimos · Personal en Misión ---
-  "Solicitudes de Personal en Misión": "servimos_solicitudes",
+  "Inicio Servimos": "servimos_inicio",
   "Programación de Personal en Misión": "servimos_programacion",
-  "Horas Extra en Misión": "servimos_horas_extra",
   "Novedades de Personal en Misión": "servimos_novedades",
-  "Cuadro de Control Servimos": "servimos_cuadro_control",
 }

@@ -12,7 +12,7 @@ export async function getUserPermissionsServimos(userId: string) {
 
     const { data, error } = await supabase
       .from("permisos_usuarios")
-      .select("servimos_solicitudes, servimos_programacion, servimos_horas_extra, servimos_novedades, servimos_cuadro_control")
+      .select("servimos_solicitudes, servimos_programacion, servimos_horas_extra, servimos_novedades, servimos_cuadro_control, servimos_inicio")
       .eq("usuario_id", userId)
       .single()
 
@@ -33,6 +33,7 @@ export async function updateUserPermissionsServimos(
     servimos_horas_extra: boolean
     servimos_novedades: boolean
     servimos_cuadro_control: boolean
+    servimos_inicio: boolean
   }>,
 ) {
   try {

@@ -4,76 +4,78 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Updated to LiPGO brand colors: #5bc0de accent, #F4F7FC background, #ffffff cards, #343a40 text, #dee2e6 borders */
-  --background: #F4F7FC;
+  /* Marca Servimos (Fase 2, 2026-08-05): sistema "Portal Servimos" —
+     teal profundo + cian, tarjetas con hairline, sin sombras. Reemplaza
+     el pase coral del rediseño anterior el mismo día. */
+  --background: #f6f8fb;
   --foreground: #343a40;
   --card: #ffffff;
   --card-foreground: #343a40;
   --popover: #ffffff;
   --popover-foreground: #343a40;
   --primary: #5bc0de;
-  --primary-foreground: #ffffff;
-  --secondary: #6c757d;
+  --primary-foreground: #0b3f4d;
+  --secondary: #12706b;
   --secondary-foreground: #ffffff;
-  --muted: #e9ecef;
+  --muted: #eef1f6;
   --muted-foreground: #6c757d;
-  --accent: #5bc0de;
-  --accent-foreground: #ffffff;
-  --destructive: #dc3545;
+  --accent: #21d4c8;
+  --accent-foreground: #0b3f4d;
+  --destructive: #b02a37;
   --destructive-foreground: #ffffff;
-  --border: #dee2e6;
-  --input: #dee2e6;
+  --border: #e5eaf1;
+  --input: #e5eaf1;
   --ring: #5bc0de;
   --chart-1: #5bc0de;
-  --chart-2: #0dcaf0;
-  --chart-3: #198754;
-  --chart-4: #ffc107;
-  --chart-5: #fd7e14;
-  --radius: 0.75rem;
-  --sidebar: #ffffff;
-  --sidebar-foreground: #343a40;
-  --sidebar-primary: #5bc0de;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e9ecef;
-  --sidebar-accent-foreground: #343a40;
-  --sidebar-border: #dee2e6;
-  --sidebar-ring: #5bc0de;
+  --chart-2: #21d4c8;
+  --chart-3: #12706b;
+  --chart-4: #fd7e14;
+  --chart-5: #0e3b3b;
+  --radius: 0.625rem;
+  --sidebar: #0e3b3b;
+  --sidebar-foreground: #a8ccc8;
+  --sidebar-primary: #21d4c8;
+  --sidebar-primary-foreground: #0b3f4d;
+  --sidebar-accent: #123c3c;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-ring: #21d4c8;
 }
 
 .dark {
-  /* Dark mode variants maintaining LiPGO brand consistency */
+  /* Dark mode: mismo acento cian, aclarado para contraste sobre --card oscura. */
   --background: #1a1d20;
   --foreground: #e9ecef;
   --card: #212529;
   --card-foreground: #e9ecef;
   --popover: #212529;
   --popover-foreground: #e9ecef;
-  --primary: #5bc0de;
-  --primary-foreground: #ffffff;
-  --secondary: #495057;
+  --primary: #6fd0ea;
+  --primary-foreground: #0b3f4d;
+  --secondary: #1c8a83;
   --secondary-foreground: #e9ecef;
   --muted: #343a40;
   --muted-foreground: #adb5bd;
-  --accent: #5bc0de;
-  --accent-foreground: #ffffff;
-  --destructive: #dc3545;
+  --accent: #3fe0d3;
+  --accent-foreground: #0b3f4d;
+  --destructive: #e35b66;
   --destructive-foreground: #ffffff;
   --border: #495057;
   --input: #495057;
-  --ring: #5bc0de;
-  --chart-1: #5bc0de;
-  --chart-2: #0dcaf0;
-  --chart-3: #198754;
-  --chart-4: #ffc107;
-  --chart-5: #fd7e14;
-  --sidebar: #212529;
-  --sidebar-foreground: #e9ecef;
-  --sidebar-primary: #5bc0de;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #343a40;
-  --sidebar-accent-foreground: #e9ecef;
-  --sidebar-border: #495057;
-  --sidebar-ring: #5bc0de;
+  --ring: #6fd0ea;
+  --chart-1: #6fd0ea;
+  --chart-2: #3fe0d3;
+  --chart-3: #1c8a83;
+  --chart-4: #fd7e14;
+  --chart-5: #a8ccc8;
+  --sidebar: #071f1f;
+  --sidebar-foreground: #a8ccc8;
+  --sidebar-primary: #3fe0d3;
+  --sidebar-primary-foreground: #071f1f;
+  --sidebar-accent: #123c3c;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-ring: #3fe0d3;
 }
 
 @theme inline {

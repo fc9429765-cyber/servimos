@@ -6,9 +6,9 @@ import type { MetadataRoute } from "next"
 // en /manifest.webmanifest y agrega el <link rel="manifest"> automaticamente.
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "LiPGO - Centro de Operaciones",
-    short_name: "LIPgo",
-    description: "Aplicación web de logística y operaciones",
+    name: "Servimos - Gestión de Personal en Misión",
+    short_name: "Servimos",
+    description: "Plataforma de gestión de personal temporal y en misión",
     start_url: "/",
     scope: "/",
     display: "standalone",

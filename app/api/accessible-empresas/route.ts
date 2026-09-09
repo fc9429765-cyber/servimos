@@ -44,18 +44,18 @@ export async function GET() {
       // If no specific access, return the user's default empresa from profiles
       const { data: profileData, error: profileError } = await supabaseAdmin
         .from("profiles")
-        .select("idempresa")
+        .select("empresa_id")
         .eq("id", user.id)
         .single()
 
-      if (profileError || !profileData?.idempresa) {
+      if (profileError || !profileData?.empresa_id) {
         return NextResponse.json({ success: false, data: [], error: "No se encontró empresa" }, { status: 404 })
       }
 
       const { data: defaultEmpresa, error: defaultError } = await supabaseAdmin
         .from("empresas")
         .select("id, nombre")
-        .eq("id", profileData.idempresa)
+        .eq("id", profileData.empresa_id)
         .single()
 
       if (defaultError || !defaultEmpresa) {

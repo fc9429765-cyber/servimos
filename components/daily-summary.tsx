@@ -1,89 +1,80 @@
 "use client"
 
-import { Truck, TrendingUp } from "lucide-react"
+import { NotebookPen, CalendarClock } from "lucide-react"
 import { useEffect, useState } from "react"
-import { getDailySummaryStats } from "@/lib/dashboard-summary-actions"
-import { getMetaDiaForEmpresa } from "@/lib/empresa-meta-dia"
-import { useAuth } from "@/components/auth-provider"
+import { getPulsoOperativoGlobal } from "@/lib/servimos-programacion-actions"
 
-interface DailySummaryStats {
-  ordenesHoy: number
-  pedidosHoy: number
-  toneladasMovidas: number
+interface PulsoStats {
+  novedadesPendientes: number
+  turnosProgramadosHoy: number
+  pctCobertura: number | null
 }
 
 export function DailySummary() {
-  const { selectedEmpresaId } = useAuth()
-  const [stats, setStats] = useState<DailySummaryStats>({
-    ordenesHoy: 0,
-    pedidosHoy: 0,
-    toneladasMovidas: 0,
+  const [stats, setStats] = useState<PulsoStats>({
+    novedadesPendientes: 0,
+    turnosProgramadosHoy: 0,
+    pctCobertura: null,
   })
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!selectedEmpresaId) return
-
+    let cancel = false
     const loadStats = async () => {
       setLoading(true)
       try {
-        const result = await getDailySummaryStats()
-        if (result.success && result.data) {
-          setStats(result.data)
-        }
+        const data = await getPulsoOperativoGlobal()
+        if (!cancel) setStats(data)
       } catch (error) {
         console.error("Error loading daily summary:", error)
       } finally {
-        setLoading(false)
+        if (!cancel) setLoading(false)
       }
     }
 
     loadStats()
     const interval = setInterval(loadStats, 300000)
-    return () => clearInterval(interval)
-  }, [selectedEmpresaId])
+    return () => {
+      cancel = true
+      clearInterval(interval)
+    }
+  }, [])
 
-  // Meta de toneladas del día, POR EMPRESA (cambia con el selector global).
-  const meta = getMetaDiaForEmpresa(selectedEmpresaId)
-  const ton = stats.toneladasMovidas
-  const pct = meta > 0 ? Math.min(100, Math.round((ton / meta) * 100)) : null
-
-  // Anillo de meta.
+  // Anillo de cobertura de hoy.
+  const pct = stats.pctCobertura
   const R = 22
   const CIRC = 2 * Math.PI * R
   const dashoffset = pct === null ? CIRC : CIRC * (1 - pct / 100)
-  const ringColor = pct === null ? "#00b4cc" : pct >= 85 ? "#12a06a" : pct >= 60 ? "#c8871a" : "#d1443f"
+  const ringColor = pct === null ? "#5bc0de" : pct >= 90 ? "#12a06a" : pct >= 75 ? "#c8871a" : "#d1443f"
 
   return (
     <div className="mb-6 sm:mb-8">
       <h2 className="mb-3 text-xs font-bold uppercase tracking-widest text-muted-foreground sm:mb-4">Pulso operativo</h2>
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
-        {/* Órdenes */}
+        {/* Novedades pendientes */}
         <div className="rounded-2xl border border-border bg-card p-4 sm:p-5">
           <div className="mb-2.5 flex items-center gap-3">
             <span
               className="flex h-9 w-9 flex-none items-center justify-center rounded-xl"
-              style={{ backgroundColor: "#1f8fb026", color: "#1f8fb0" }}
+              style={{ backgroundColor: "#5bc0de26", color: "#5bc0de" }}
             >
-              <Truck className="h-[18px] w-[18px]" />
+              <NotebookPen className="h-[18px] w-[18px]" />
             </span>
-            <span className="text-3xl font-extrabold tabular-nums tracking-tight" style={{ color: "#1f8fb0" }}>
-              {loading ? "…" : stats.ordenesHoy}
+            <span className="text-3xl font-extrabold tabular-nums tracking-tight" style={{ color: "#5bc0de" }}>
+              {loading ? "…" : stats.novedadesPendientes}
             </span>
             <span className="ml-auto text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">
-              Órdenes
+              Novedades
             </span>
           </div>
-          <p className="text-[13px] leading-snug text-muted-foreground">
-            <b className="text-foreground">{loading ? "…" : `${ton} t`}</b> despachadas hoy en este proyecto.
-          </p>
+          <p className="text-[13px] leading-snug text-muted-foreground">Novedades de personal en misión pendientes de revisión.</p>
         </div>
 
-        {/* Toneladas con MEDIDOR DE META (por empresa) */}
+        {/* Cobertura de hoy con anillo de medida */}
         <div className="rounded-2xl border border-border bg-card p-4 sm:p-5">
           <div className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">
-            Toneladas · meta {meta ? `${meta} t` : "—"}
+            Cobertura de hoy
           </div>
           <div className="flex items-center gap-4">
             <svg viewBox="0 0 58 58" className="h-[58px] w-[58px] flex-none">
@@ -106,33 +97,32 @@ export function DailySummary() {
             </svg>
             <div>
               <div className="text-2xl font-extrabold tabular-nums tracking-tight text-foreground">
-                {loading ? "…" : ton}
-                <span className="ml-0.5 text-sm font-bold text-muted-foreground">t</span>
+                {loading ? "…" : pct === null ? "—" : `${pct}%`}
               </div>
               <div className="mt-1 text-[13px] leading-snug text-muted-foreground">
-                {pct === null ? "Sin meta asignada." : pct >= 100 ? "Meta cumplida ✓" : `${pct}% de la meta del día.`}
+                {pct === null ? "Sin demanda configurada aún." : pct >= 90 ? "Cobertura al día ✓" : "Puestos cubiertos hoy."}
               </div>
             </div>
           </div>
         </div>
 
-        {/* Pedidos */}
+        {/* Turnos programados hoy */}
         <div className="rounded-2xl border border-border bg-card p-4 sm:p-5">
           <div className="mb-2.5 flex items-center gap-3">
             <span
               className="flex h-9 w-9 flex-none items-center justify-center rounded-xl"
-              style={{ backgroundColor: "#2f9b6426", color: "#2f9b64" }}
+              style={{ backgroundColor: "#2A9D8F26", color: "#2A9D8F" }}
             >
-              <TrendingUp className="h-[18px] w-[18px]" />
+              <CalendarClock className="h-[18px] w-[18px]" />
             </span>
-            <span className="text-3xl font-extrabold tabular-nums tracking-tight" style={{ color: "#2f9b64" }}>
-              {loading ? "…" : stats.pedidosHoy}
+            <span className="text-3xl font-extrabold tabular-nums tracking-tight" style={{ color: "#2A9D8F" }}>
+              {loading ? "…" : stats.turnosProgramadosHoy}
             </span>
             <span className="ml-auto text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">
-              Pedidos
+              Turnos
             </span>
           </div>
-          <p className="text-[13px] leading-snug text-muted-foreground">Pedidos programados hoy en este proyecto.</p>
+          <p className="text-[13px] leading-snug text-muted-foreground">Turnos de personal en misión programados hoy.</p>
         </div>
       </div>
     </div>

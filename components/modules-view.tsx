@@ -5,9 +5,6 @@ import { groups, type GroupKey, type Module } from "@/lib/dashboard-data"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import { TINT } from "@/components/module-cards"
 import { AreaKpis, type ValorBsc } from "@/components/area-kpis"
-import { PedidosKpiStrip } from "@/components/orders/pedidos-kpi-strip"
-import { DespachoKpiStrip } from "@/components/orders/despacho-kpi-strip"
-import { VehiculosNoProcesadosCard } from "@/components/vehiculos-no-procesados-card"
 import { AreaKpiStrip } from "@/components/area-kpi-strip"
 import { useAuth } from "@/components/auth-provider"
 import { getIndicadoresValores } from "@/lib/sig-actions"
@@ -165,27 +162,10 @@ export function ModulesView({ groupKey, onBack, onSelectModule }: ModulesViewPro
         </div>
       </div>
 
-      {/* KPIs del área. Para Pedidos/Despacho se muestran los KPIs de gestión del
-          cliente alineados a objetivos (vencidos, por vencer, vehículos por cerrar)
-          en vez de solo conteos básicos. El resto de grupos usa el set del BSC. */}
-      {groupKey === "pedidos" ? (
-        <div className="space-y-1">
-          <div className="text-sm font-semibold text-foreground">Cumplimiento de entregas</div>
-          <PedidosKpiStrip />
-        </div>
-      ) : groupKey === "despachos" ? (
-        <div className="space-y-3">
-          <div className="text-sm font-semibold text-foreground">Operación y despacho del día</div>
-          <DespachoKpiStrip />
-          <VehiculosNoProcesadosCard />
-        </div>
-      ) : (
-        <>
-          <AreaKpis groupKey={groupKey} valores={valores} loading={loading} />
-          {/* Tira rápida de "a revisar" del área (conteos), además del BSC. */}
-          <AreaKpiStrip groupKey={groupKey} />
-        </>
-      )}
+      {/* KPIs del área: el set del BSC para el grupo activo. */}
+      <AreaKpis groupKey={groupKey} valores={valores} loading={loading} />
+      {/* Tira rápida de "a revisar" del área (conteos), además del BSC. */}
+      <AreaKpiStrip groupKey={groupKey} />
 
       {/* Módulos directos */}
       {group.modules && group.modules.length > 0 && (

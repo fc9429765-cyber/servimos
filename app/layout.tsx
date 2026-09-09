@@ -17,13 +17,13 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: "LiPGO - Centro de Operaciones",
-  description: "Aplicación web de logística y operaciones",
+  title: "Servimos - Gestión de Personal en Misión",
+  description: "Plataforma de gestión de personal temporal y en misión",
   generator: "v0.app",
-  applicationName: "LIPgo",
+  applicationName: "Servimos",
   appleWebApp: {
     capable: true,
-    title: "LIPgo",
+    title: "Servimos",
     statusBarStyle: "default",
   },
   // iOS/Safari necesita el meta legacy `apple-mobile-web-app-capable=yes` para

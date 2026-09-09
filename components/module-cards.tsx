@@ -13,13 +13,8 @@ interface ModuleCardsProps {
 // Color de dominio por grupo (mismos tonos que el sidebar). Cada "app" tiene
 // identidad visual propia; ese color es el ACENTO vivo del tile.
 export const TINT: Record<string, string> = {
+  servimos_mision: "#d9622f",
   integral: "#5b6b7f",
-  pedidos: "#4f63c4",
-  despachos: "#1f8fb0",
-  inventarios: "#0e9c9c",
-  mrp: "#b5852a",
-  produccion: "#c56a2a",
-  lip: "#7b57c9",
   financiera: "#2f9b64",
   rrhh: "#c65893",
   certificaciones_lip: "#c8492f",

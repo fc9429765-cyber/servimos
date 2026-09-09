@@ -75,8 +75,14 @@ export function LoginForm() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1 flex flex-col items-center">
-          <Image src="/lipgo-logo.png" alt="LiPGO" width={200} height={60} className="h-16 w-auto mb-4" priority />
-          <CardTitle className="text-2xl font-bold">Iniciar Sesión</CardTitle>
+          <span className="text-3xl font-extrabold tracking-tight" style={{ color: "#12706b" }}>
+            Servimos
+          </span>
+          <span className="flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground">
+            <Image src="/lipgo-logo.png" alt="Powered by LIPgo" width={72} height={22} className="h-4 w-auto opacity-70" />
+            <span>· Personal en Misión</span>
+          </span>
+          <CardTitle className="text-2xl font-bold mt-2">Iniciar Sesión</CardTitle>
           <CardDescription>Ingresa tus credenciales para acceder al sistema</CardDescription>
         </CardHeader>
         <CardContent>

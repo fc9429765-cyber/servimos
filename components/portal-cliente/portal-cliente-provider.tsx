@@ -11,10 +11,10 @@ import { supabase } from "@/lib/supabase-client"
 import { getEmpresaClienteActual } from "@/lib/portal-cliente-actions"
 
 interface ContextoEmpresaCliente {
-  empresa_cliente_id: number
+  cliente_id: string
   rol: string
   nombre: string | null
-  empresas_cliente: { nombre: string; sla_horas_objetivo: number } | null
+  clientes: { nombre: string } | null
 }
 
 interface PortalClienteContextValue {

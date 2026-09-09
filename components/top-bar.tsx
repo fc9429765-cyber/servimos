@@ -171,6 +171,16 @@ export function TopBar() {
                 </span>
               )}
             </button>
+            {/* Acceso al Portal Servimos (app aparte, staff interno de Servimos) */}
+            <button
+              onClick={() => router.push("/portal-servimos")}
+              className="hidden items-center gap-1.5 rounded-lg border px-2.5 py-1 text-xs font-semibold transition-colors sm:flex"
+              style={{ borderColor: "#5bc0de", color: "#12706b" }}
+              title="Portal Servimos"
+            >
+              <Building2 className="h-3.5 w-3.5" />
+              Portal Servimos
+            </button>
             {/* Evaluaciones de Desempeno Pendientes - solo si tiene permiso evaluacionpersonal y hay pendientes */}
             {hasEvaluacionesAlerts && (
               <Popover open={evaluacionesOpen} onOpenChange={setEvaluacionesOpen}>

@@ -1,4 +1,4 @@
-import { Truck, Scale, ClipboardCheck, Package, FileText, CheckCircle, Box, PackagePlus, BarChart3, Package2, ArrowRightLeft, History, Search, LayoutDashboard, Activity, FileCheck, Receipt, Clock, Users, Eye, Settings, Type as type, LucideIcon, CreditCard, UserCheck, Store, Tag, Layers, MapPin, Warehouse, Gauge, QrCode, Sparkles, BadgeCheck, BookOpen, Lock, ClipboardList, CalendarDays, NotebookPen, GraduationCap, Wallet, Banknote, Calculator, CalendarClock, FolderOpen, FolderArchive, UserCog, HeartHandshake, ShieldCheck, Stethoscope, AlertTriangle, Star, Send, Landmark } from "lucide-react"
+import { ClipboardCheck, Package, FileText, BarChart3, ArrowRightLeft, LayoutDashboard, Activity, FileCheck, Receipt, Clock, Users, Eye, Settings, Type as type, LucideIcon, CreditCard, UserCheck, Store, Gauge, Sparkles, BadgeCheck, BookOpen, Lock, ClipboardList, CalendarDays, NotebookPen, GraduationCap, Wallet, Banknote, Calculator, CalendarClock, FolderOpen, FolderArchive, UserCog, HeartHandshake, ShieldCheck, Stethoscope, AlertTriangle, Landmark } from "lucide-react"
 
 export interface Module {
   name: string
@@ -22,230 +22,21 @@ export interface Group {
 }
 
 export type GroupKey =
-  | "pedidos"
-  | "inventarios"
-  | "produccion"
   | "integral"
-  | "lip"
   | "rrhh"
   | "certificaciones_lip"
   | "sst"
   | "configuracion"
-  | "despachos"
-  | "mrp"
   | "financiera"
-  | "servimos_mision"
 
 export const groups: Group[] = [
-  {
-    // REORG (2026-07-03): "Recepción y Despacho" fusiona los antiguos grupos
-    // "Gestión de Vehículos", "Despachos/Recepción" y "Báscula" en un solo
-    // grupo por flujo de puerta (inbound/outbound). Los módulos conservan su
-    // `name` → sus permisos NO cambian; solo cambia dónde se muestran.
-    key: "despachos",
-    title: "Recepción y Despacho",
-    icon: Truck,
-    modules: [],
-    subgroups: [
-      {
-        title: "Órdenes y Recepción",
-        modules: [
-          { name: "Generar Órdenes de Cargue", icon: Truck },
-          { name: "Generar Órdenes de Descargue", icon: Truck },
-          { name: "Generar Orden de Distribución", icon: Truck },
-          { name: "Gestión de Ordenes", icon: Receipt },
-          { name: "Recepción de Traslado", icon: Eye },
-          // Dashboard de indicadores de despachos y recepción. Su visibilidad
-          // queda gobernada por el permiso `dashboardrecepcion` (mapeado en
-          // `lib/permissions-map.ts`).
-          { name: "Dashboard Despachos/Recepción", icon: LayoutDashboard },
-        ],
-      },
-      {
-        title: "Vehículos y Portería",
-        modules: [
-          { name: "Registrar Vehículos", icon: Clock },
-          { name: "Ver Vehículos", icon: Eye },
-          { name: "Registro sanitario", icon: ClipboardCheck },
-          { name: "Ver historial de Inspección", icon: History },
-        ],
-      },
-      {
-        title: "Báscula",
-        modules: [
-          { name: "Báscula", icon: Scale },
-          { name: "Historial Báscula", icon: History },
-        ],
-      },
-    ],
-  },
-  {
-    key: "pedidos",
-    title: "Gestión de Pedidos",
-    icon: Package,
-    modules: [
-      { name: "Entrada de pedidos", icon: PackagePlus },
-      { name: "Gestionar pedidos", icon: FileText },
-      { name: "Gestión integral de pedidos", icon: FileText },
-      // Modulo nuevo: vista de indicadores de pedidos. Su visibilidad
-      // queda gobernada por el permiso `dashboardpedidos` (mapeado en
-      // `lib/permissions-map.ts`).
-      { name: "Dashboard Pedidos", icon: LayoutDashboard },
-    ],
-  },
-  {
-    key: "inventarios",
-    title: "Almacenamiento",
-    icon: Box,
-    modules: [],
-    subgroups: [
-      {
-        title: "Gestión inventario",
-        modules: [
-          { name: "Transacciones de Inventario", icon: ArrowRightLeft },
-          { name: "Saldos de inventario", icon: BarChart3 },
-          { name: "Saldos por producto", icon: Package2 },
-          { name: "Traslados de producto", icon: ArrowRightLeft },
-          { name: "Gestión de transacciones", icon: FileText },
-          { name: "Capacidad Bodega", icon: Gauge },
-          // Registro diario de disponibilidad de montacargas y conteo
-          // del personal de operación. CRUD sobre `montacargasdia`,
-          // protegido por el permiso `montacargasdia`.
-          { name: "Montacargas y personal día", icon: Truck },
-          { name: "Panel LIP Inventario", icon: BarChart3, label: "Panel de Inventario (Exactitud y movimientos)" },
-          { name: "Cuadre de Inventario", icon: ClipboardCheck, label: "Cuadre y Correcciones (Cierre mensual)" },
-          // REORG (2026-07-03): "Auditoría de Inventario" se movió aquí desde su
-          // antiguo grupo propio "Auditoría". Conserva su `name`/permiso.
-          { name: "Auditoría de Inventario", icon: Search },
-        ],
-      },
-      {
-        title: "Asignación de Lotes",
-        modules: [
-          { name: "Asignación de Lotes", icon: FileCheck },
-          { name: "Historial de lotes", icon: History },
-        ],
-      },
-    ],
-  },
-  {
-    key: "produccion",
-    title: "Producción",
-    icon: Package2,
-    modules: [
-      { name: "Ingreso de Producción", icon: PackagePlus },
-      { name: "Tolva", icon: Package },
-      { name: "Ver Tolva", icon: Eye },
-      { name: "Ver ingresos de producción", icon: Eye },
-      { name: "Aprobación de ingreso de producción", icon: CheckCircle },
-      { name: "Dashboard de Producción", icon: Activity },
-      { name: "Reporte de Paros", icon: AlertTriangle },
-      { name: "Historial Aprobaciones", icon: History },
-      { name: "Reprocesos", icon: ArrowRightLeft },
-      { name: "Servicios Adicionales", icon: Clock },
-    ],
-  },
   {
     key: "integral",
     title: "Torre de Control",
     icon: LayoutDashboard,
     modules: [
-      { name: "Dashboard Operacion", icon: Activity },
+      { name: "Dashboard Operacion", icon: Gauge, label: "Cuadro de Control" },
       { name: "Asistente IA", icon: Sparkles },
-    ],
-  },
-  {
-    key: "lip",
-    title: "Operación LIP",
-    icon: Users,
-    modules: [],
-    subgroups: [
-      {
-        title: "Operación Lip",
-        modules: [
-          { name: "Picking", icon: PackagePlus },
-          { name: "Packing", icon: Package },
-          { name: "Ver Picking/Packing", icon: Eye },
-          { name: "Registro de QR estibas", icon: QrCode },
-          { name: "Lectura de QR estibas", icon: QrCode },
-          { name: "Inventario por Estiba", icon: QrCode },
-          // "Proyecciones" se movio al grupo RRHH Lip por solicitud del
-          // negocio: el modulo proyecta cargas/ingresos asociados al
-          // personal y conceptualmente vive mas cerca de RRHH que de
-          // operacion logistica.
-          { name: "Dashboard Operaciones LIP", icon: LayoutDashboard },
-          { name: "Panel LIP Operación", icon: BarChart3, label: "Tablero del Coordinador" },
-          // "Gestión de Facturas" reubicado aquí desde Gestión Financiera: es
-          // función operativa propia del coordinador/líder de LIP. Conserva su
-          // nombre y permiso (gestionfacturas).
-          { name: "Gestión de Facturas", icon: Receipt },
-          // El coordinador es responsable de las partes interesadas (conductores
-          // y cliente): gestiona aquí satisfacción y PQRSF. Mismo módulo del SIG,
-          // permiso propio (satisfaccion_pqrsf).
-          { name: "Satisfacción y PQRSF", icon: ClipboardList, label: "Satisfacción y PQRSF (conductores y cliente)" },
-          // Calificación del conductor EN CALIENTE al fin de cargue (kiosko 🟢🟡🔴).
-          { name: "Calificación del Conductor", icon: Star, label: "Calificación del Conductor (en caliente)" },
-          { name: "Aprobar Turnos", icon: CheckCircle },
-          // Modulo "Bitácora": registro diario de novedades/observaciones
-          // de la operacion. CRUD sobre la tabla `bitacora` filtrado por
-          // empresa y protegido por el permiso `bitacora`.
-          { name: "Bitácora", icon: NotebookPen },
-          // Movido desde "Reclutamiento y Selección" por solicitud del
-          // negocio: la solicitud de personal se gestiona dentro de la
-          // operacion LIP. Conserva su permiso original.
-          { name: "Solicitud de Personal", icon: UserCheck },
-          // Movido desde "Compensación" por solicitud del negocio.
-          // Conserva su permiso original.
-          { name: "Programación de turnos", icon: CalendarClock, label: "Programación de Turnos" },
-          // Movido desde "Compensación" por solicitud del negocio.
-          // Conserva su permiso original.
-          { name: "Registro de asistencia", icon: UserCheck, label: "Registro de Asistencia" },
-          // Envio de alertas y programacion de turnos por WhatsApp al
-          // celular del personal (desde colaboradores_th / registroasistencia).
-          { name: "Notificaciones al Personal", icon: Send, label: "Notificaciones al Personal (WhatsApp)" },
-        ],
-      },
-      // REORG (2026-07-03): el subgrupo "Administración LIP" (Registrar Gasto,
-      // Dashboard Gastos) se movió a "Gestión Financiera". Conservan sus
-      // permisos (gastos).
-    ],
-  },
-  {
-    // Módulo de Gestión Financiera. "Facturación" se elevó desde Gestión LIP a
-    // su propio módulo. Los submódulos CONSERVAN sus permisos ya otorgados en
-    // Gestión de Usuarios (facturacion_proyectos, tarifas, gestionfacturas).
-    key: "financiera",
-    title: "Gestión Financiera",
-    icon: Wallet,
-    modules: [],
-    subgroups: [
-      {
-        title: "Facturación",
-        modules: [
-          { name: "Indicador de Facturación por Proyectos", icon: BarChart3 },
-          { name: "Facturación Proyectos", icon: CreditCard },
-          { name: "Tarifas", icon: CreditCard },
-          // "Gestión de Facturas" se MOVIÓ a Gestión LIP → Operación Lip (función
-          // operativa del coordinador). Conserva su permiso (gestionfacturas).
-        ],
-      },
-      {
-        // Estado de Resultados (P&L) trasladado desde Gestión LIP. Conserva su
-        // permiso `estadoresultados`.
-        title: "Resultados",
-        modules: [
-          { name: "Estado de Resultados", icon: BarChart3 },
-        ],
-      },
-      {
-        // REORG (2026-07-03): "Gastos" trasladado desde "Gestión LIP ·
-        // Administración LIP". Conservan su permiso `gastos`.
-        title: "Gastos",
-        modules: [
-          { name: "Registrar Gasto", icon: Receipt },
-          { name: "Dashboard Gastos", icon: BarChart3 },
-        ],
-      },
     ],
   },
   {
@@ -328,7 +119,38 @@ export const groups: Group[] = [
     ],
   },
   {
-    // Modulo de certificaciones LIP. Agrupa el sistema SST 0312 y el centro
+    // Módulo de Gestión Financiera. Los submódulos CONSERVAN sus permisos ya
+    // otorgados (facturacion_proyectos, tarifas, gastos, estadoresultados).
+    key: "financiera",
+    title: "Gestión Financiera",
+    icon: Wallet,
+    modules: [],
+    subgroups: [
+      {
+        title: "Facturación",
+        modules: [
+          { name: "Indicador de Facturación por Proyectos", icon: BarChart3 },
+          { name: "Facturación Proyectos", icon: CreditCard },
+          { name: "Tarifas", icon: CreditCard },
+        ],
+      },
+      {
+        title: "Resultados",
+        modules: [
+          { name: "Estado de Resultados", icon: BarChart3 },
+        ],
+      },
+      {
+        title: "Gastos",
+        modules: [
+          { name: "Registrar Gasto", icon: Receipt },
+          { name: "Dashboard Gastos", icon: BarChart3 },
+        ],
+      },
+    ],
+  },
+  {
+    // Modulo de certificaciones. Agrupa el sistema SST 0312 y el centro
     // de evidencia ISO 9001 (movido desde Auditoria) como submodulos.
     key: "certificaciones_lip",
     title: "Certificaciones · SIG (Calidad · Ambiente · SST)",
@@ -348,7 +170,7 @@ export const groups: Group[] = [
           { name: "Objetivos y Metas SIG", icon: ClipboardList, label: "Objetivos y Metas (6.2)" },
           { name: "No Conformidades SIG", icon: ClipboardList, label: "No Conformidades (10.2)" },
           { name: "Indicadores SIG", icon: Gauge, label: "BSC · Cuadro de Mando Integral" },
-          { name: "Mapa de Interacción del Proceso", icon: ClipboardCheck, label: "Mapa de Interacción del Proceso (LIPgo)" },
+          { name: "Mapa de Interacción del Proceso", icon: ClipboardCheck, label: "Mapa de Interacción del Proceso" },
           { name: "Satisfacción y PQRSF", icon: ClipboardList, label: "Satisfacción y PQRSF (9.1.2)" },
         ],
       },
@@ -369,12 +191,10 @@ export const groups: Group[] = [
     ],
   },
   {
-    // REORG: SST deja de ser un subgrupo dentro de Certificaciones y pasa a ser
-    // su PROPIO módulo (grupo), para que sea un área calificable por sí misma y
+    // SST es su PROPIO módulo (grupo), área calificable por sí misma y
     // conectada al BSC por área. Los submódulos CONSERVAN su `name` y permiso
     // (sst_auditoria, sst_autoevaluacion, sst_epp, sst_incidentes, sst_medevac…),
-    // así que los accesos ya otorgados no cambian. Certificaciones conserva el
-    // SIG transversal + ISO 9001 + ISO 14001.
+    // así que los accesos ya otorgados no cambian.
     key: "sst",
     title: "Seguridad y Salud en el Trabajo (SST)",
     icon: ShieldCheck,
@@ -433,29 +253,6 @@ export const groups: Group[] = [
         ],
       },
       {
-        title: "Productos",
-        modules: [
-          { name: "Productos", icon: Package },
-          { name: "Categorías", icon: Tag },
-          { name: "Sub Categorías", icon: Layers },
-        ],
-      },
-      {
-        title: "Bodegas",
-        modules: [
-          { name: "Bodegas", icon: Warehouse },
-          { name: "Localizaciones", icon: MapPin },
-        ],
-      },
-      {
-        title: "Transportes",
-        modules: [
-          { name: "Tipos Despacho", icon: Truck },
-          { name: "Transportadoras", icon: Truck },
-          { name: "Tipos de Vehiculos", icon: Truck },
-        ],
-      },
-      {
         title: "General",
         modules: [
           { name: "Condiciones Pago", icon: CreditCard },
@@ -464,34 +261,6 @@ export const groups: Group[] = [
           { name: "Accesos de Usuario", icon: Lock },
         ],
       },
-    ],
-  },
-  {
-    key: "mrp",
-    title: "MRP",
-    icon: Layers,
-    modules: [
-      { name: "Creación de materiales", icon: Package },
-      { name: "Ingresos MP", icon: PackagePlus },
-      { name: "Explosión de materiales", icon: Layers },
-      { name: "Gestión de proveedores", icon: Users },
-      { name: "Saldos de empaque", icon: Box },
-      { name: "Saldos de materia prima", icon: Package2 },
-    ],
-  },
-  {
-    // Fase 1 Servimos (2026-08-04): programación y novedades de personal en
-    // misión. Vive en el esquema `servimos` (ver scripts/servimos/), aparte
-    // de los datos operativos de LIP en `public`.
-    key: "servimos_mision",
-    title: "Personal en Misión",
-    icon: HeartHandshake,
-    modules: [
-      { name: "Solicitudes de Personal en Misión", icon: Send },
-      { name: "Programación de Personal en Misión", icon: CalendarClock },
-      { name: "Horas Extra en Misión", icon: Clock },
-      { name: "Novedades de Personal en Misión", icon: NotebookPen },
-      { name: "Cuadro de Control Servimos", icon: Gauge },
     ],
   },
 ]

@@ -42,41 +42,33 @@ export const KPI_DEFS: Record<string, KpiDef> = {
 
 // Qué indicadores muestra cada grupo del menú (por su `key`).
 export const AREA_KPIS: Record<string, string[]> = {
-  integral: ["sla_global", "desp_meta_ton", "desp_cumplimiento"],
-  pedidos: ["desp_ordenes", "desp_toneladas"],
-  despachos: ["sla_tiempos", "desp_cumplimiento", "desp_meta_ton", "vehiculos_atendidos"],
-  inventarios: ["inv_exactitud", "inv_rechazos", "desp_toneladas"],
-  produccion: ["desp_meta_ton", "desp_toneladas"],
-  lip: ["sla_tiempos", "sat_conductor", "desp_cumplimiento", "lip_tiempo_cargue"],
   financiera: ["lip_facturacion"],
   rrhh: ["gh_activos", "gh_ausentismo", "gh_cobertura", "gh_recobro"],
   certificaciones_lip: ["sla_global", "sat_cliente", "sat_conductor"],
   sst: ["sgsst_0312", "sst_at_count", "sst_at_dias", "sst_ipevr_cumpl"],
-  // mrp / configuracion: sin indicadores de área en el BSC → no muestran KPIs.
+  // servimos_mision / integral / configuracion: sin indicadores de área en el
+  // BSC todavía → no muestran tira de KPIs (Torre de Control usa su propio
+  // panel de KPIs de Servimos, ver CuadroControlServimos).
 }
 
 // Preguntas SUGERIDAS propias de cada área (grupo del menú). Cada una está
 // alineada a datos que LIPbot puede consultar/gestionar EN ESE módulo, para no
 // mostrar sugerencias fuera de contexto (ej. no ofrecer "pedidos" en RRHH).
 export const AREA_SUGERENCIAS: Record<string, string[]> = {
-  integral: ["¿Cómo va el SLA global hoy?", "¿Cumplimos la meta de toneladas?", "¿Qué requiere mi atención hoy?"],
-  pedidos: ["¿Cuántos pedidos hay este mes?", "¿Cuánto suman los pedidos del mes?", "¿Qué pedidos están pendientes?"],
-  despachos: ["¿Cuántas toneladas cargué hoy?", "¿Cuántos cargues siguen sin cerrar?", "¿Cuántos vehículos se atendieron hoy?"],
-  inventarios: ["¿Qué stock hay disponible?", "¿Cómo va la exactitud de inventario?", "¿Cuántos registros de inventario hay?"],
-  produccion: ["¿Cuántas toneladas se produjeron este mes?", "¿Cómo va la meta de producción?"],
-  lip: ["¿Cómo va el SLA de tiempos?", "¿Cuántos cargues sin cerrar hoy?", "¿Cuántas toneladas cargué este mes?"],
+  servimos_mision: ["¿Cuántas solicitudes de personal están pendientes?", "¿Cómo va el cumplimiento de SLA?", "¿Qué turnos hay programados hoy?"],
+  integral: ["¿Qué requiere mi atención hoy?", "¿Cómo va el cumplimiento de SLA?"],
   financiera: ["¿Qué facturas hay por solicitar?", "¿Cuánto suman los gastos del mes?", "Registrar un gasto"],
   rrhh: ["¿Cuántos colaboradores activos hay?", "Registrar una novedad a un trabajador", "¿Cómo va el ausentismo del mes?"],
-  certificaciones_lip: ["¿Cómo va la satisfacción del cliente?", "¿Cómo va la satisfacción del conductor?"],
+  certificaciones_lip: ["¿Cómo va la satisfacción del cliente?"],
   sst: ["¿Cómo va el cumplimiento del SG-SST 0312?", "¿Cuántos accidentes de trabajo hay?", "¿Cómo va la intervención de peligros (IPEVR)?"],
-  configuracion: ["Crear un cliente nuevo", "Registrar un producto", "Editar un destino"],
+  configuracion: ["Crear un cliente nuevo", "Editar un usuario"],
 }
 
 // Sugerencias genéricas (Inicio / sin grupo específico).
 const SUGERENCIAS_GENERICAS = [
   "¿Qué requiere mi atención hoy?",
-  "¿Cuántas toneladas cargué este mes?",
-  "¿Cuántos pedidos hay este mes?",
+  "¿Cuántas solicitudes de personal están pendientes?",
+  "¿Cómo va el cumplimiento de SLA?",
 ]
 
 /** Sugerencias para un grupo del menú; si no hay mapeo, usa las genéricas. */

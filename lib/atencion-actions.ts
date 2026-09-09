@@ -1,7 +1,6 @@
 "use server"
 
-import { createClient } from "@/lib/supabase-client"
-import { getCurrentEmpresaId } from "@/lib/company-filter"
+import { getSupabaseAdminServimos } from "@/lib/supabase-admin"
 import { getUserPermissions } from "@/lib/permissions-actions"
 import { MODULE_PERMISSION_MAP } from "@/lib/permissions-map"
 
@@ -13,55 +12,59 @@ export interface AtencionRow {
   modulo?: string
 }
 
-function colombiaDate(): string {
-  const now = new Date()
-  const t = new Date(now.toLocaleString("en-US", { timeZone: "America/Bogota" }))
-  return `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, "0")}-${String(t.getDate()).padStart(2, "0")}`
-}
-
 function colombiaHour(): number {
   const now = new Date()
   return new Date(now.toLocaleString("en-US", { timeZone: "America/Bogota" })).getHours()
 }
 
 /**
- * Calcula lo que "requiere atención hoy" para la empresa seleccionada (cookie
- * del selector global). Defensivo: cualquier fallo devuelve lista vacía y la
- * tarjeta de IA simplemente no muestra el bloque.
+ * Calcula lo que "requiere atención hoy" (Servimos). Defensivo: cualquier
+ * fallo devuelve lista vacía y la tarjeta de IA simplemente no muestra el
+ * bloque.
+ *
+ * Fase 2 (2026-08-05): reescrito contra el esquema de nómina nuevo —
+ * `servimos.solicitudes_personal`/`incapacidades`/`horas_extra` de Fase 1
+ * ya no existen. Incapacidades y horas extra ahora son filas de
+ * `servimos.novedades` (tipo IEG/IAT y HED/HEN respectivamente).
  */
 export async function getAtencionDelDia(userId?: string): Promise<{ success: boolean; items: AtencionRow[] }> {
   try {
-    const supabase = await createClient()
-    const empresaId = await getCurrentEmpresaId()
-    if (!empresaId) return { success: true, items: [] }
+    const supabase = await getSupabaseAdminServimos()
 
     const items: AtencionRow[] = []
-    const today = colombiaDate()
 
-    // 1) Cargues del día sin cerrar (fincargue null) → riesgo de SLA.
-    const { count: sinCerrar } = await supabase
-      .from("cabeceraoc")
-      .select("ordendecargue", { count: "exact", head: true })
-      .eq("idempresa", empresaId)
-      .eq("fechacargue", today)
-      .is("fincargue", null)
-    if (sinCerrar && sinCerrar > 0) {
+    // 1) Incapacidades (IEG/IAT) pendientes de revisión.
+    const { count: incapPendientes } = await supabase
+      .from("novedades")
+      .select("id", { count: "exact", head: true })
+      .in("tipo", ["IEG", "IAT"])
+      .eq("estado", "pendiente")
+    if (incapPendientes && incapPendientes > 0) {
       items.push({
-        label: `${sinCerrar} cargue${sinCerrar !== 1 ? "s" : ""} sin cerrar hoy`,
-        sev: sinCerrar > 3 ? "crit" : "warn",
-        modulo: "Gestión de Ordenes",
+        label: `${incapPendientes} incapacidad${incapPendientes !== 1 ? "es" : ""} pendiente${incapPendientes !== 1 ? "s" : ""} de revisión`,
+        sev: "warn",
+        modulo: "Novedades de Personal en Misión",
       })
     }
 
-    // NOTA: la alerta de "facturas por solicitar" NO se emite aquí (banner global del
-    // home). Es una tarea/KPI PROPIA del Coordinador en el módulo Operaciones LIP y
-    // vive dentro de ese panel (panel-operacion-lip · "Facturación pendiente por
-    // solicitar"). Así LIPbot no la muestra fuera de su módulo.
+    // 2) Horas extra (HED/HEN) reportadas como novedad, pendientes de aprobación.
+    const { count: horasExtraPend } = await supabase
+      .from("novedades")
+      .select("id", { count: "exact", head: true })
+      .in("tipo", ["HED", "HEN"])
+      .eq("estado", "pendiente")
+    if (horasExtraPend && horasExtraPend > 0) {
+      items.push({
+        label: `${horasExtraPend} hora${horasExtraPend !== 1 ? "s" : ""} extra pendiente${horasExtraPend !== 1 ? "s" : ""} de aprobación`,
+        sev: "warn",
+        modulo: "Novedades de Personal en Misión",
+      })
+    }
 
-    // GATE por área: cada tarea pertenece a un módulo/KPI de un área (p. ej. las
-    // facturas por solicitar son del Coordinador de LIP). Se muestra SOLO a quien
-    // tiene el permiso de ese módulo, para que LIPbot no exhiba tareas ajenas al
-    // rol. Si no hay registro de permisos (p. ej. gerencia/admin), no se oculta.
+    // GATE por área: cada tarea pertenece a un módulo/KPI de un área. Se
+    // muestra SOLO a quien tiene el permiso de ese módulo, para que LIPbot
+    // no exhiba tareas ajenas al rol. Si no hay registro de permisos (p. ej.
+    // gerencia/admin), no se oculta.
     let permisos: any = null
     try {
       permisos = await getUserPermissions(userId)

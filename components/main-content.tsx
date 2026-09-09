@@ -41,7 +41,6 @@ import { TransferRequestsView } from "@/components/transfer-requests-view"
 import { BatchApproval } from "@/components/batch-approval"
 import { Picking } from "@/components/picking"
 import { Packing } from "@/components/packing"
-import DashboardOperacion from "@/components/dashboard-operacion"
 import { BatchHistory } from "@/components/batch-history"
 import { ProductionEntriesView } from "@/components/production-entries-view"
 import InventoryAudit from "@/components/inventory-audit"
@@ -143,11 +142,9 @@ import AsistenteIA from "@/components/asistente-ia" // Added import for AI Assis
 import FormularioRegistroGasto from "@/components/gastos/formulario-registro-gasto"
 import DashboardGastos from "@/components/gastos/dashboard-gastos"
 import EstadoResultados from "@/components/estado-resultados/estado-resultados"
-import { SolicitudesPersonal } from "@/components/servimos/solicitudes-personal"
-import { ProgramacionTurnosServimos } from "@/components/servimos/programacion-turnos-servimos"
-import { HorasExtraServimos } from "@/components/servimos/horas-extra-servimos"
+import { ProgramacionNominaServimos } from "@/components/servimos/programacion-nomina-servimos"
 import { NovedadesServimos } from "@/components/servimos/novedades-servimos"
-import { CuadroControlServimos } from "@/components/servimos/cuadro-control-servimos"
+import { InicioServimos } from "@/components/servimos/inicio-servimos"
 import { GroupKey } from "@/lib/dashboard-data"
 
 interface MainContentProps {
@@ -331,19 +328,22 @@ export function MainContent({
             <OrderEditPage {...({ orderId: editingOrderId, onBack: () => setEditingOrderId(null) } as any)} />
           ) : !selectedGroup ? (
             <>
-              {/* Hero premium con IA (rediseño 2026-07-03). Solo layout; el botón
-                  abre el Asistente IA que ya existe. */}
+              {/* Hero premium con IA (sistema "Portal Servimos", 2026-08-05):
+                  tarjeta oscura teal — mismo patrón "spotlight" que usa el
+                  prototipo del paquete en 8 pantallas distintas (Inicio,
+                  Programación, PILA, Recobro, etc.), no un gradiente navy de
+                  logística. */}
               <style>{`
-                .lipgo-home-hero{ position:relative; overflow:hidden; border-radius:18px; color:#eaf6fa;
+                .lipgo-home-hero{ position:relative; overflow:hidden; border-radius:18px; color:#eaf6f4;
                   background:
-                    radial-gradient(80% 130% at 92% -20%, rgba(0,194,220,.30), transparent 55%),
-                    radial-gradient(70% 120% at -5% 120%, rgba(95,120,225,.32), transparent 55%),
-                    linear-gradient(120deg,#0a2545,#0b2f57 55%,#0e4a72);
-                  border:1px solid rgba(120,190,230,.15); }
-                .lipgo-ai-bar{ background:rgba(255,255,255,.1); border:1px solid rgba(180,230,245,.28); backdrop-filter:blur(4px); }
-                .lipgo-ai-bar input::placeholder{ color:#bfe0ec; }
-                .lipgo-ai-chip{ color:#d6eef5; background:rgba(255,255,255,.08); border:1px solid rgba(180,230,245,.2); transition:background .15s; }
-                .lipgo-ai-chip:hover{ background:rgba(255,255,255,.16); }
+                    radial-gradient(80% 130% at 92% -20%, rgba(33,212,200,.30), transparent 55%),
+                    radial-gradient(70% 120% at -5% 120%, rgba(18,112,107,.35), transparent 55%),
+                    linear-gradient(120deg,#0a2e2e,#0e3b3b 55%,#0e4444);
+                  border:1px solid rgba(255,255,255,.08); }
+                .lipgo-ai-bar{ background:rgba(255,255,255,.08); border:1px solid rgba(168,204,200,.28); backdrop-filter:blur(4px); }
+                .lipgo-ai-bar input::placeholder{ color:#9fc9c3; }
+                .lipgo-ai-chip{ color:#cfe9e6; background:rgba(255,255,255,.07); border:1px solid rgba(168,204,200,.2); transition:background .15s; }
+                .lipgo-ai-chip:hover{ background:rgba(255,255,255,.14); }
               `}</style>
               <div className="lipgo-home-hero mb-3 px-4 py-2.5">
                 <div className="relative z-10 flex flex-wrap items-baseline gap-x-2.5 gap-y-0.5">
@@ -351,7 +351,7 @@ export function MainContent({
                     <span aria-hidden="true">👋</span> {nowInfo.saludo}
                     {primerNombre ? `, ${primerNombre}` : ""}
                   </h1>
-                  <span className="text-xs sm:text-sm" style={{ color: "#9fd4e6" }}>
+                  <span className="text-xs sm:text-sm" style={{ color: "#9fc9c3" }}>
                     {nowInfo.fecha}
                     {selectedEmpresaNombre ? ` · ${selectedEmpresaNombre}` : ""}
                   </span>
@@ -367,9 +367,9 @@ export function MainContent({
                 <div className="mb-2.5">
                   <span
                     className="inline-flex items-center gap-1.5 text-[10.5px] font-extrabold uppercase tracking-[0.16em]"
-                    style={{ color: "#00a6c4" }}
+                    style={{ color: "#0f7a72" }}
                   >
-                    <span aria-hidden="true">✨</span> La inteligencia de LIPgo
+                    <span aria-hidden="true">✨</span> La inteligencia de Servimos
                   </span>
                   <p className="mt-1 max-w-[62ch] text-[13px] text-muted-foreground">
                     Háblale a <span className="font-bold text-foreground">LIPbot</span> en lenguaje natural: te da{" "}
@@ -571,7 +571,7 @@ export function MainContent({
             </PermissionGuard>
           ) : selectedModule === "Dashboard Operacion" ? (
             <PermissionGuard moduleName="Dashboard Operacion">
-              <DashboardOperacion />
+              <InicioServimos />
             </PermissionGuard>
           ) : selectedModule === "Gestión de Contratos" ? (
             <PermissionGuard moduleName="Gestión de Contratos">
@@ -986,25 +986,17 @@ export function MainContent({
                 <AsistenteIA onNavigate={onNavigateModule} onOpenGroup={onOpenGroup} />
               </div>
             </PermissionGuard>
-          ) : selectedModule === "Solicitudes de Personal en Misión" ? (
-            <PermissionGuard moduleName="Solicitudes de Personal en Misión">
-              <SolicitudesPersonal />
+          ) : selectedModule === "Inicio Servimos" ? (
+            <PermissionGuard moduleName="Inicio Servimos">
+              <InicioServimos />
             </PermissionGuard>
           ) : selectedModule === "Programación de Personal en Misión" ? (
             <PermissionGuard moduleName="Programación de Personal en Misión">
-              <ProgramacionTurnosServimos />
-            </PermissionGuard>
-          ) : selectedModule === "Horas Extra en Misión" ? (
-            <PermissionGuard moduleName="Horas Extra en Misión">
-              <HorasExtraServimos />
+              <ProgramacionNominaServimos />
             </PermissionGuard>
           ) : selectedModule === "Novedades de Personal en Misión" ? (
             <PermissionGuard moduleName="Novedades de Personal en Misión">
               <NovedadesServimos />
-            </PermissionGuard>
-          ) : selectedModule === "Cuadro de Control Servimos" ? (
-            <PermissionGuard moduleName="Cuadro de Control Servimos">
-              <CuadroControlServimos />
             </PermissionGuard>
           ) : configDef ? (
             <PermissionGuard moduleName={selectedModule || "Configuración"}>

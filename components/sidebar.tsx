@@ -2,19 +2,15 @@
 
 import {
   Home,
-  Package,
-  FileText,
   Search,
   LayoutDashboard,
   Settings,
   Menu,
   X,
-  Truck,
   ChevronDown,
   Users,
   Wallet,
   BadgeCheck,
-  Layers,
   ShieldCheck,
 } from "lucide-react"
 import Image from "next/image"
@@ -61,39 +57,6 @@ function HeroActor({ groupKey }: { groupKey: GroupKey | null }) {
           <text x="12" y="12.4" textAnchor="middle" fontSize="9" fontWeight="800" fontFamily="ui-sans-serif,system-ui,sans-serif" className="hero-accent">$</text>
         </>
       )
-    case "inventarios": // Inventarios → caja isométrica
-      return (
-        <>
-          <path d="M12 3 l7.5 3.7 v6.6 l-7.5 3.7 -7.5-3.7 v-6.6 z" className="hero-light" />
-          <path d="M4.5 6.7 l7.5 3.7 7.5-3.7 M12 10.4 v8" fill="none" className="hero-accent-stroke" strokeWidth="1.1" strokeLinejoin="round" />
-        </>
-      )
-    case "pedidos": // Pedidos → carrito
-      return (
-        <g fill="none" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M3 4 h2.6 l2 8 h8.6 l2-6 h-11.8" className="hero-lightstroke" strokeWidth="1.6" />
-          <circle cx="9" cy="14.6" r="1.5" className="hero-accent" fill="currentColor" />
-          <circle cx="15.6" cy="14.6" r="1.5" className="hero-accent" fill="currentColor" />
-        </g>
-      )
-    case "mrp": // MRP / Planeación → engranaje
-    case "produccion": // Producción → engranaje girando
-      return (
-        <g className="lipgo-gear">
-          <g className="hero-lightstroke" strokeWidth="2.3" strokeLinecap="round">
-            <line x1="11" y1="2.4" x2="11" y2="4.6" />
-            <line x1="11" y1="13.4" x2="11" y2="15.6" />
-            <line x1="4.4" y1="9" x2="6.6" y2="9" />
-            <line x1="15.4" y1="9" x2="17.6" y2="9" />
-            <line x1="6.3" y1="4.3" x2="7.9" y2="5.9" />
-            <line x1="14.1" y1="12.1" x2="15.7" y2="13.7" />
-            <line x1="15.7" y1="4.3" x2="14.1" y2="5.9" />
-            <line x1="7.9" y1="12.1" x2="6.3" y2="13.7" />
-          </g>
-          <circle cx="11" cy="9" r="4.1" className="hero-light" />
-          <circle cx="11" cy="9" r="1.9" fill="#0b2138" className="hero-accent-stroke" strokeWidth="1.2" />
-        </g>
-      )
     case "configuracion": // Configuración → controles / sliders
       return (
         <g strokeLinecap="round">
@@ -121,13 +84,6 @@ function HeroActor({ groupKey }: { groupKey: GroupKey | null }) {
           <path d="M8 11 h6" className="hero-accent-stroke" strokeWidth="1.2" strokeLinecap="round" />
         </>
       )
-    case "lip": // LIP → energía / rayo
-      return (
-        <>
-          <path d="M13 2 L6 10 h4 l-2 6 8-9 h-4 z" className="hero-accent" />
-          <path d="M13 2 L6 10 h4 l-2 6 8-9 h-4 z" fill="none" className="hero-lightstroke" strokeWidth="0.8" strokeLinejoin="round" />
-        </>
-      )
     case "integral": // Gestión Integral → barras / indicadores
       return (
         <>
@@ -136,14 +92,18 @@ function HeroActor({ groupKey }: { groupKey: GroupKey | null }) {
           <rect x="14.8" y="3" width="3.2" height="12" rx="0.6" className="hero-accent" />
         </>
       )
-    case "despachos": // Despachos → camión (motivo de marca)
-    default: // Inicio / sin grupo → camión logístico
+    default: // Inicio / sin grupo → conexión humana (motivo de marca)
       return (
         <>
-          <rect x="6" y="4" width="13" height="9" rx="1.5" className="hero-light" />
-          <path d="M19 7h5l3 3v3h-8z" className="hero-accent" />
-          <circle cx="10.5" cy="14.3" r="1.7" fill="#0b2138" className="hero-lightstroke" strokeWidth="1" />
-          <circle cx="23" cy="14.3" r="1.7" fill="#0b2138" className="hero-lightstroke" strokeWidth="1" />
+          {/* Persona izquierda */}
+          <circle cx="5.6" cy="4.2" r="2.3" className="hero-light" />
+          <path d="M5.6 7 c-2.6 0-4.4 2-4.4 4.6 v2.6 h7 v-2.2" className="hero-light" />
+          {/* Persona derecha */}
+          <circle cx="16.4" cy="4.2" r="2.3" className="hero-light" />
+          <path d="M16.4 7 c2.6 0 4.4 2 4.4 4.6 v2.6 h-7 v-2.2" className="hero-light" />
+          {/* Apretón de manos (acento de marca) */}
+          <path d="M8.6 11.4 h4.8" className="hero-accent-stroke" fill="none" strokeWidth="2" strokeLinecap="round" />
+          <circle cx="11" cy="11.4" r="1.6" className="hero-accent" />
         </>
       )
   }
@@ -309,14 +269,8 @@ export function Sidebar({
   const allMenuItems = [
     { key: null, label: "Inicio", icon: Home },
     { key: "integral" as GroupKey, label: "Torre de Control", icon: LayoutDashboard },
-    { key: "pedidos" as GroupKey, label: "Pedidos", icon: FileText },
-    { key: "despachos" as GroupKey, label: "Recepción y Despacho", icon: Truck },
-    { key: "inventarios" as GroupKey, label: "Almacenamiento", icon: Package },
-    { key: "mrp" as GroupKey, label: "MRP · Materiales", icon: Layers },
-    { key: "produccion" as GroupKey, label: "Producción", icon: Package },
-    { key: "lip" as GroupKey, label: "Operación LIP", icon: Users },
-    { key: "financiera" as GroupKey, label: "Gestión Financiera", icon: Wallet },
     { key: "rrhh" as GroupKey, label: "Gestión Humana", icon: Users },
+    { key: "financiera" as GroupKey, label: "Gestión Financiera", icon: Wallet },
     { key: "certificaciones_lip" as GroupKey, label: "Certificaciones · SIG", icon: BadgeCheck },
     { key: "sst" as GroupKey, label: "Seguridad y Salud (SST)", icon: ShieldCheck },
     { key: "configuracion" as GroupKey, label: "Configuración", icon: Settings },
@@ -332,13 +286,7 @@ export function Sidebar({
 
   // REORG visual (estilo Odoo): color de dominio por grupo para los íconos.
   const GROUP_TINT: Record<string, string> = {
-    integral: "#9fb6cc",
-    pedidos: "#8ea6f0",
-    despachos: "#5fc8e6",
-    inventarios: "#3fd7cf",
-    mrp: "#e0b45c",
-    produccion: "#e79a5c",
-    lip: "#b199ee",
+    integral: "#5bc0de",
     financiera: "#5fd398",
     rrhh: "#ed94c2",
     certificaciones_lip: "#f0876a",
@@ -348,7 +296,7 @@ export function Sidebar({
 
   // Color del héroe = tinte del área activa (o cian de marca en Inicio). Alimenta
   // rutas, hub, glow y el actor temático vía la variable CSS --hero.
-  const heroAccent = (selectedGroup ? GROUP_TINT[selectedGroup] : undefined) ?? "#00c2dc"
+  const heroAccent = (selectedGroup ? GROUP_TINT[selectedGroup] : undefined) ?? "#21d4c8"
 
   // Lista plana de todos los modulos visibles, con su grupo, etiqueta del
   // grupo, subgrupo (si aplica) e icono. Sirve para el buscador.
@@ -403,50 +351,44 @@ export function Sidebar({
 
   return (
     <>
-      {/* Rediseño "Torre de Control" (2026-07-03): re-skin OSCURO premium del
-          sidebar redefiniendo las variables de tema SOLO dentro de .lipgo-sb
-          (no cambia el resto de la app), + hero animado de logística. No toca
+      {/* Sistema "Portal Servimos" (Fase 2, 2026-08-05): sidebar OSCURO teal,
+          acento cian — reemplaza el pase claro/cálido de esta mañana por el
+          sistema de diseño real del paquete de especificación. Variables
+          SOLO dentro de .lipgo-sb (no cambia el resto de la app). No toca
           permisos ni rutas. */}
       <style>{`
         .lipgo-sb{
-          --card:#0b2138; --card-foreground:#ffffff; --foreground:#ffffff;
-          --background:#0e2b46; --muted-foreground:#d6e6f5;
-          --accent:#1c4a72; --accent-foreground:#ffffff;
-          --border:#1b3350; --input:#1b3350; --primary:#00c2dc; --ring:#00c2dc;
-          background-image:linear-gradient(180deg,#0b2138,#071a30);
+          --card:#0e3b3b; --card-foreground:#e7f3f1; --foreground:#e7f3f1;
+          --background:#0e3b3b; --muted-foreground:#a8ccc8;
+          --accent:#123c3c; --accent-foreground:#ffffff;
+          --border:rgba(255,255,255,.08); --input:rgba(255,255,255,.08);
+          --primary:#5bc0de; --ring:#5bc0de;
+          background-image:linear-gradient(180deg,#0e3b3b,#0a2e2e);
         }
-        /* Letras del menú en BLANCO con alto contraste (peticion de diseño). */
-        .lipgo-sb nav button span{ color:#ffffff; }
-        .lipgo-sb nav button{ color:#eaf4ff; }
-        .lipgo-sb .bg-primary{ box-shadow:0 0 12px rgba(0,194,220,.65); }
+        .lipgo-sb nav button span{ color:#e7f3f1; }
+        .lipgo-sb nav button{ color:#a8ccc8; }
+        .lipgo-sb .bg-primary{ box-shadow:0 0 10px rgba(33,212,200,.4); }
         .lipgo-hero-bg{ background:
-          radial-gradient(120% 90% at 82% 0%, color-mix(in srgb, var(--hero,#00c2dc) 34%, transparent), transparent 58%),
-          radial-gradient(95% 85% at 0% 100%, rgba(28,86,150,.42), transparent 55%);
+          radial-gradient(120% 90% at 82% 0%, color-mix(in srgb, var(--hero,#21d4c8) 30%, transparent), transparent 58%),
+          radial-gradient(95% 85% at 0% 100%, rgba(18,112,107,.4), transparent 55%);
           transition: background .5s ease; }
-        .lipgo-tag{ font:600 10px/1 ui-sans-serif,system-ui,sans-serif; letter-spacing:.14em; text-transform:uppercase; color:#7fe6f4; display:flex; align-items:center; gap:6px; }
+        .lipgo-tag{ font:600 10px/1 ui-sans-serif,system-ui,sans-serif; letter-spacing:.14em; text-transform:uppercase; color:#7fd8cf; display:flex; align-items:center; gap:6px; }
         .lipgo-live{ width:6px; height:6px; border-radius:50%; background:#37f5a0; box-shadow:0 0 8px #37f5a0; }
-        .lipgo-logo-mark{ width:30px; height:30px; border-radius:9px; background:linear-gradient(135deg,#0a3f6e,#00c2dc); display:flex; align-items:center; justify-content:center; font:800 15px/1 sans-serif; color:#fff; box-shadow:0 0 14px rgba(0,194,220,.5); }
-        .lipgo-word{ font:800 19px/1 sans-serif; letter-spacing:-.02em; color:#fff; }
-        .lipgo-tile{ display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:8px; background:#123650; border:1px solid #22456a; flex:none; }
-        .lipgo-route{ stroke: color-mix(in srgb, var(--hero,#82c8eb) 58%, transparent); stroke-width:1.6; fill:none; stroke-linecap:round; stroke-dasharray:5 6; transition: stroke .5s ease; }
-        .lipgo-route.b{ stroke: color-mix(in srgb, var(--hero,#82c8eb) 26%, transparent); }
-        .lipgo-node{ fill:#cfeff8; } .lipgo-node.hub{ fill: var(--hero,#00c2dc); transition: fill .5s ease; }
+        .lipgo-logo-mark{ width:30px; height:30px; border-radius:9px; background:#21d4c8; display:flex; align-items:center; justify-content:center; font:800 15px/1 sans-serif; color:#0b3f4d; box-shadow:0 0 14px rgba(33,212,200,.4); }
+        .lipgo-word{ font:800 19px/1 sans-serif; letter-spacing:-.02em; color:#ffffff; }
+        .lipgo-tile{ display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:8px; background:#123c3c; border:1px solid rgba(255,255,255,.1); flex:none; }
         /* Actor temático del héroe (adaptativo por módulo). El color viene de --hero. */
-        .hero-light{ fill:#dff2fb; } .hero-accent{ fill: var(--hero,#00c2dc); }
-        .hero-lightstroke{ stroke:#dff2fb; } .hero-accent-stroke{ stroke: var(--hero,#00c2dc); }
-        .lipgo-sect{ font:700 9.5px/1 sans-serif; letter-spacing:.16em; text-transform:uppercase; color:#5f7c96; padding:13px 14px 5px; }
+        .hero-light{ fill:#2a5f5c; } .hero-accent{ fill: var(--hero,#21d4c8); }
+        .hero-lightstroke{ stroke:#2a5f5c; } .hero-accent-stroke{ stroke: var(--hero,#21d4c8); }
+        .lipgo-sect{ font:700 9.5px/1 sans-serif; letter-spacing:.16em; text-transform:uppercase; color:#5fa39c; padding:13px 14px 5px; }
         @media (prefers-reduced-motion: no-preference){
-          .lipgo-route{ animation: lipgo-flow 1.1s linear infinite; }
           .lipgo-actor{ animation: lipgo-run 6s ease-in-out infinite, lipgo-fadein .5s ease-out; }
           .lipgo-gear{ transform-box: fill-box; transform-origin: center; animation: lipgo-spin 3.4s linear infinite; }
-          .lipgo-hub-ring{ animation: lipgo-ring 2.8s ease-out infinite; }
           .lipgo-live{ animation: lipgo-blink 1.8s ease-in-out infinite; }
         }
-        @keyframes lipgo-flow{ to{ stroke-dashoffset:-22; } }
         @keyframes lipgo-run{ 0%{transform:translateX(4px)} 50%{transform:translateX(150px)} 100%{transform:translateX(4px)} }
         @keyframes lipgo-spin{ to{ transform: rotate(360deg); } }
         @keyframes lipgo-fadein{ from{ opacity:0 } to{ opacity:1 } }
-        @keyframes lipgo-ring{ 0%{ r:3; opacity:.85 } 100%{ r:15; opacity:0 } }
         @keyframes lipgo-blink{ 0%,100%{opacity:1} 50%{opacity:.35} }
       `}</style>
 
@@ -463,12 +405,6 @@ export function Sidebar({
             <>
               <div className="lipgo-hero-bg absolute inset-0" aria-hidden="true" />
               <svg className="absolute inset-0 h-full w-full" viewBox="0 0 264 128" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-                <path className="lipgo-route b" d="M-10 40 C 60 40, 90 96, 170 96 S 260 60, 280 62" />
-                <path className="lipgo-route" d="M-10 92 C 70 92, 95 44, 165 44 S 250 74, 280 30" />
-                <circle className="lipgo-node hub" cx="165" cy="44" r="3.4" />
-                <circle className="lipgo-hub-ring hero-accent-stroke" cx="165" cy="44" r="3" fill="none" strokeWidth="1.3" />
-                <circle className="lipgo-node" cx="34" cy="86" r="2.6" />
-                <circle className="lipgo-node" cx="238" cy="52" r="2.6" />
                 <g transform="translate(0,72)">
                   {/* Actor adaptativo: cambia de glifo y color según el módulo activo.
                       key fuerza el remount para reproducir el fundido de entrada. */}
@@ -492,7 +428,7 @@ export function Sidebar({
           </button>
           {collapsed ? (
             <div className="flex h-full items-center justify-center">
-              <div className="lipgo-logo-mark">L</div>
+              <div className="lipgo-logo-mark">S</div>
             </div>
           ) : (
             <button
@@ -503,12 +439,12 @@ export function Sidebar({
               className="absolute bottom-3 left-4 z-10 flex flex-col items-start gap-1.5 text-left"
             >
               <span className="flex items-center gap-2.5">
-                <span className="lipgo-logo-mark">L</span>
-                <span className="lipgo-word">LIPgo</span>
+                <span className="lipgo-logo-mark">S</span>
+                <span className="lipgo-word">Servimos</span>
               </span>
               <span className="lipgo-tag">
                 <span className="lipgo-live" />
-                Torre de Control · en vivo
+                Personal en Misión · en vivo
               </span>
             </button>
           )}

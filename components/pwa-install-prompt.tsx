@@ -145,12 +145,12 @@ export function PwaInstallPrompt() {
     ) : plataforma === "chromium-desktop" ? (
       <span>
         Usa el ícono <strong>⊕ Instalar</strong> de la barra de direcciones, o el menú{" "}
-        <strong>⋮</strong> → <strong>“Instalar LIPgo”</strong>.
+        <strong>⋮</strong> → <strong>“Instalar Servimos”</strong>.
       </span>
     ) : (
       <span>
         Para instalarla, ábrela en <strong>Chrome</strong> o <strong>Edge</strong> y usa
-        “Instalar LIPgo”.
+        “Instalar Servimos”.
       </span>
     )
 
@@ -159,14 +159,14 @@ export function PwaInstallPrompt() {
       <div className="w-full max-w-md rounded-2xl border border-border bg-card p-4 shadow-lg">
         <div className="flex items-start gap-3">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-muted">
-            <Image src="/lipgo-icon.png" alt="LIPgo" width={48} height={48} className="h-12 w-12 object-contain" />
+            <Image src="/lipgo-icon.png" alt="Servimos" width={48} height={48} className="h-12 w-12 object-contain" />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-semibold text-card-foreground">¿Quieres instalar LIPgo?</p>
+            <p className="text-sm font-semibold text-card-foreground">¿Quieres instalar Servimos?</p>
             {deferred ? (
               <>
                 <p className="mt-0.5 text-xs text-muted-foreground">
-                  Instala el acceso directo en tu dispositivo para abrir LIPgo con un toque, como una app.
+                  Instala el acceso directo en tu dispositivo para abrir Servimos con un toque, como una app.
                 </p>
                 <div className="mt-3 flex items-center gap-2">
                   <Button size="sm" onClick={instalar} className="gap-1.5">
